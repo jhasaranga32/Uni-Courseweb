@@ -30,12 +30,12 @@ import StudentModules from './Pages/Module Management/semesters/Studentmodules.j
 
 import LessonList from './Pages/Module Management/lessons/LessonList.jsx';
 import LessonForm from './Pages/Module Management/lessons/LessonForm.jsx';
-import LessonView from './Pages/Module Management/lessons/LessonView.jsx';  
+import LessonView from './Pages/Module Management/lessons/LessonView.jsx';
 import StudentLessonList from './Pages/Module Management/lessons/StudentModule.jsx';
 import MyCourses from './Pages/Module Management/modules/MyCourses.jsx';
 import AnnouncementList from './Pages/Announcement/AnnouncementList.jsx';
-import AnnouncementCreate from './Pages/Announcement/AnnouncementCreate.jsx';
-import AnnouncementDetail  from './Pages/Announcement/Announcementdetail.jsx';
+import AnnouncementCreate from './Pages/Announcement/Announcementcreate.jsx';
+import AnnouncementDetail from './Pages/Announcement/Announcementdetail.jsx';
 import AnnouncementEdit from './Pages/Announcement/Announcementedit.jsx';
 import StudentAnnouncements from './Pages/Announcement/Studentannouncements.jsx';
 
@@ -83,30 +83,30 @@ function App() {
         <Route path="/student/faculties/:facultyId/semesters" element={<StudentSemesters />} />
         <Route path="/student/faculties/:facultyId/semesters/:semesterId/modules" element={<StudentModules />} />
 
-<Route path="/student/my-courses" element={<MyCourses />} />
-
-     
-<Route path="/modules/:moduleId/lessons"        element={<LessonList />} />
-<Route path="/modules/:moduleId/lessons/new"    element={<LessonForm />} />
-<Route path="/lessons/:id"                      element={<LessonView />} />
-<Route path="/lessons/:id/edit"                 element={<LessonForm />} />
-import StudentLessonList from './Pages/Module Management/lessons/StudentLessonList.jsx'
-
-<Route path="/announcements" element={<AnnouncementList />} />
-<Route path="/announcements/new" element={<AnnouncementCreate />} />
-<Route path="/announcements/:id" element={<AnnouncementDetail />} />
-<Route path="/announcements/:id/edit" element={<AnnouncementEdit />} />
-<Route path="/student/announcements" element={<StudentAnnouncements />} />
+        <Route path="/student/my-courses" element={<MyCourses />} />
 
 
-<Route path="/admin-lecturers" element={<LecturerAdmin />} />
-<Route path="/student-lecturers" element={<LecturerStudent />} />
-<Route path="/employees/new" element={<CreateEmployeeModal />} />
+        <Route path="/modules/:moduleId/lessons" element={<LessonList />} />
+        <Route path="/modules/:moduleId/lessons/new" element={<LessonForm />} />
+        <Route path="/lessons/:id" element={<LessonView />} />
+        <Route path="/lessons/:id/edit" element={<LessonForm />} />
+        <Route path="/announcements" element={<AnnouncementList />} />
 
-<Route
-  path="/student/faculties/:facultyId/semesters/:semesterId/modules/:moduleId/lessons"
-  element={<StudentLessonList />}
-/>      
+        <Route path="/announcements/new" element={<AnnouncementCreate />} />
+        <Route path="/announcements/:id" element={<AnnouncementDetail />} />
+        <Route path="/announcements/:id/edit" element={<AnnouncementEdit />} />
+        <Route path="/student/announcements" element={<StudentAnnouncements />} />
+
+
+
+        <Route path="/admin-lecturers" element={<LecturerAdmin />} />
+        <Route path="/student-lecturers" element={<LecturerStudent />} />
+        <Route path="/employees/new" element={<CreateEmployeeModal />} />
+
+        <Route
+          path="/student/faculties/:facultyId/semesters/:semesterId/modules/:moduleId/lessons"
+          element={<StudentLessonList />}
+        />
 
       </Routes>
     </Router>

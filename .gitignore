@@ -2,7 +2,6 @@
 node_modules/
 
 # environment files
-.env
 frontend/.env
 backend/.env
 
@@ -17,3 +16,4 @@ frontend/build/
 # system files
 .DS_Store
 Thumbs.db
+config.bat

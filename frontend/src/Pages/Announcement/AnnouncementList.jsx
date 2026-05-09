@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../Components/ModuleManagement/Sidebar.jsx";
+
 export default function AnnouncementList() {
   const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState(null);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const userRole = localStorage.getItem("userRole"); // matches key set in Signin.jsx
+  const isAuthorized = ["Admin", "SuperAdmin", "Employee"].includes(userRole);
 
   useEffect(() => {
     fetchAnnouncements();
@@ -16,53 +19,53 @@ export default function AnnouncementList() {
     setLoading(true);
     fetch("/api/announcements")
       .then((res) => res.json())
-      .then((data) => { setAnnouncements(data); setLoading(false); })
+      .then((data) => { setAnnouncements(Array.isArray(data) ? data : []); setLoading(false); })
+
       .catch(() => setLoading(false));
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this announcement?")) return;
     setDeletingId(id);
-    await fetch(`/api/announcements/${id}`, { method: "DELETE" });
+    const token = localStorage.getItem("token");
+    await fetch(`/api/announcements/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
     setAnnouncements((prev) => prev.filter((a) => a._id !== id));
     setDeletingId(null);
   };
 
   const filtered = announcements.filter((a) =>
-    a.title.toLowerCase().includes(search.toLowerCase())
+    (a?.title ?? "").toLowerCase().includes(search.toLowerCase())
   );
 
+
   return (
-    
-    <div className="min-h-screen bg-slate-50 pl-40">
+    <div className="min-h-screen bg-slate-50 font-sans flex">
       <Sidebar />
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');`}</style>
+      <div className="ml-56 flex-1 p-8">
 
-      {/* Header */}
-      
-      
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            
-            <div>
-              <h1 className="text-lg font-bold text-slate-900 leading-none">Announcements</h1>
-              <p className="text-xs text-slate-400 mt-0.5">Manage all announcements</p>
-            </div>
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">📢 Announcements</h1>
+            <p className="text-sm text-gray-500 mt-0.5">
+              {isAuthorized ? "Create and manage all announcements" : "View all announcements"}
+            </p>
           </div>
-          <button
-            onClick={() => navigate("/announcements/new")}
-            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-4 py-2.5 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-indigo-200 active:scale-95"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
-            </svg>
-            New Announcement
-          </button>
+          {isAuthorized && (
+            <button
+              onClick={() => navigate("/announcements/new")}
+              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-4 py-2.5 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-indigo-200 active:scale-95"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+              </svg>
+              New Announcement
+            </button>
+          )}
         </div>
-      
-      
-
-      <div className="max-w-6xl mx-auto px-6 py-8">
 
         {/* Search + count row */}
         <div className="flex flex-col sm:flex-row gap-3 mb-8">
@@ -110,9 +113,9 @@ export default function AnnouncementList() {
             </div>
             <p className="text-slate-600 font-semibold mb-1">No announcements found</p>
             <p className="text-slate-400 text-sm mb-5">
-              {search ? "Try a different keyword" : "Create your first announcement to get started"}
+              {search ? "Try a different keyword" : "No announcements yet"}
             </p>
-            {!search && (
+            {!search && isAuthorized && (
               <button
                 onClick={() => navigate("/announcements/new")}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all"
@@ -169,19 +172,23 @@ export default function AnnouncementList() {
                     >
                       View
                     </button>
-                    <button
-                      onClick={() =>  navigate(`/announcements/${a._id}/edit`)}
-                      className="flex-1 text-center text-xs font-semibold py-2 rounded-lg text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition-colors"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(a._id)}
-                      disabled={deletingId === a._id}
-                      className="flex-1 text-center text-xs font-semibold py-2 rounded-lg text-red-500 bg-red-50 hover:bg-red-100 transition-colors disabled:opacity-40"
-                    >
-                      {deletingId === a._id ? "..." : "Delete"}
-                    </button>
+                    {isAuthorized && (
+                      <>
+                        <button
+                          onClick={() => navigate(`/announcements/${a._id}/edit`)}
+                          className="flex-1 text-center text-xs font-semibold py-2 rounded-lg text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition-colors"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(a._id)}
+                          disabled={deletingId === a._id}
+                          className="flex-1 text-center text-xs font-semibold py-2 rounded-lg text-red-500 bg-red-50 hover:bg-red-100 transition-colors disabled:opacity-40"
+                        >
+                          {deletingId === a._id ? "..." : "Delete"}
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

@@ -16,10 +16,10 @@ const NavLink = ({ to, children, onClick, className = '' }) => {
 };
 
 const DropdownArrow = () => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180" 
-    viewBox="0 0 20 20" 
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180"
+    viewBox="0 0 20 20"
     fill="currentColor"
   >
     <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -30,7 +30,7 @@ const DropdownArrow = () => (
 const LogoutModal = ({ onConfirm, onCancel }) => (
   <div className="fixed inset-0 z-[100] flex items-center justify-center">
     {/* Backdrop */}
-    <div 
+    <div
       className="absolute inset-0 bg-black/40 backdrop-blur-sm"
       onClick={onCancel}
     />
@@ -91,19 +91,19 @@ const StudentNavbar = () => {
       )}
 
       <nav className="w-full backdrop-blur-md bg-white/70 px-6 py-2.5 flex justify-between items-center sticky top-0 z-50 border-b border-white/20 shadow-lg">
-        
+
         {/* Left Side: Logo & Brand */}
-        <div 
-          className="flex items-center gap-3 cursor-pointer group" 
+        <div
+          className="flex items-center gap-3 cursor-pointer group"
           onClick={() => navigate('/student-dashboard')}
           role="button"
           tabIndex={0}
           onKeyDown={(e) => e.key === 'Enter' && navigate('/student-dashboard')}
         >
-          <img 
-            src={logo} 
-            alt="LearnBuddy" 
-            className="w-10 h-10 rounded-full border-2 border-white/50 shadow-md group-hover:border-indigo-300 transition-all duration-200 object-cover" 
+          <img
+            src={logo}
+            alt="LearnBuddy"
+            className="w-10 h-10 rounded-full border-2 border-white/50 shadow-md group-hover:border-indigo-300 transition-all duration-200 object-cover"
           />
           <span className="text-xl font-extrabold bg-gradient-to-r from-indigo-700 to-teal-600 bg-clip-text text-transparent hidden sm:block group-hover:opacity-80 transition-opacity">
             Mc Wallace University
@@ -117,22 +117,23 @@ const StudentNavbar = () => {
           <NavLink to="/student/my-courses">My Courses</NavLink>
           <NavLink to="/student-lecturers">Support</NavLink>
           <NavLink to="/student/announcements">Announcements</NavLink>
+
         </div>
 
         {/* Right Side: Profile + Logout */}
         <div className="flex items-center gap-3 border-l border-white/20 pl-4 sm:pl-6">
-          
+
           {/* Profile */}
-          <Link 
-            to={userId ? `/users/${userId}` : "#"} 
+          <Link
+            to={userId ? `/users/${userId}` : "#"}
             className="relative group cursor-pointer block"
             aria-label="My Profile"
           >
             {profileImage && profileImage !== 'undefined' ? (
-              <img 
-                src={profileImage} 
-                alt="Profile" 
-                className="w-10 h-10 rounded-full object-cover border-2 border-white/50 group-hover:border-indigo-500 group-hover:shadow-md transition-all duration-200" 
+              <img
+                src={profileImage}
+                alt="Profile"
+                className="w-10 h-10 rounded-full object-cover border-2 border-white/50 group-hover:border-indigo-500 group-hover:shadow-md transition-all duration-200"
               />
             ) : (
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-100/90 to-teal-100/90 backdrop-blur-sm flex items-center justify-center text-indigo-700 font-bold text-lg border-2 border-white/50 group-hover:border-indigo-500 group-hover:shadow-md transition-all duration-200">

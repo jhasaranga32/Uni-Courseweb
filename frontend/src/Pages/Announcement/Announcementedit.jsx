@@ -52,10 +52,18 @@ export default function AnnouncementEdit() {
     if (image) fd.append("image", image);
 
     try {
-      const res = await fetch(`/api/announcements/${id}`, { method: "PUT", body: fd });
+      const token = localStorage.getItem("token");
+      const res = await fetch(`/api/announcements/${id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: fd,
+      });
       if (res.ok) navigate("/announcements");
       else setErrors({ global: "Failed to update announcement. Please try again." });
     } catch {
+
       setErrors({ global: "Network error. Please try again." });
     } finally {
       setLoading(false);

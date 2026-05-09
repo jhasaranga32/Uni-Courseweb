@@ -9,14 +9,16 @@ export default function StudentAnnouncements() {
   useEffect(() => {
     fetch("/api/announcements")
       .then((r) => r.json())
-      .then((data) => { setAnnouncements(data); setLoading(false); })
+      .then((data) => { setAnnouncements(Array.isArray(data) ? data : []); setLoading(false); })
+
       .catch(() => setLoading(false));
   }, []);
 
   const filtered = announcements.filter((a) =>
-    a.title.toLowerCase().includes(search.toLowerCase()) ||
-    a.description.toLowerCase().includes(search.toLowerCase())
+    (a?.title ?? "").toLowerCase().includes(search.toLowerCase()) ||
+    (a?.description ?? "").toLowerCase().includes(search.toLowerCase())
   );
+
 
   const formatDate = (d) =>
     new Date(d).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });

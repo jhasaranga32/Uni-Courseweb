@@ -44,10 +44,18 @@ export default function AnnouncementCreate() {
     if (image) fd.append("image", image);
 
     try {
-      const res = await fetch("/api/announcements/add", { method: "POST", body: fd });
+      const token = localStorage.getItem("token");
+      const res = await fetch("/api/announcements/add", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: fd,
+      });
       if (res.ok) navigate("/announcements");
       else setErrors({ global: "Failed to create announcement. Please try again." });
     } catch {
+
       setErrors({ global: "Network error. Please try again." });
     } finally {
       setLoading(false);
